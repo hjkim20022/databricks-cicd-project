@@ -1,6 +1,0 @@
-"OrderID,Product,Category,Quantity,Price,OrderDate"
-"1001,Laptop,Electronics,2,1200,2026-05-01"
-"1002,Keyboard,Electronics,5,80,2026-05-02"
-"1003,Chair,Furniture,3,150,2026-05-03"
-"1004,Desk,Furniture,1,400,2026-05-04"
-"1005,Monitor,Electronics,4,300,2026-05-05"

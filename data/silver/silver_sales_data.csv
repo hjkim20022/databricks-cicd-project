@@ -1,0 +1,6 @@
+OrderID,Product,Category,Quantity,Price,OrderDate,Revenue
+1001,Laptop,Electronics,2,1200.0,2026-05-01,2400.0
+1002,Keyboard,Electronics,5,80.0,2026-05-02,400.0
+1003,Chair,Furniture,3,150.0,2026-05-03,450.0
+1004,Desk,Furniture,1,400.0,2026-05-04,400.0
+1005,Monitor,Electronics,4,300.0,2026-05-05,1200.0
