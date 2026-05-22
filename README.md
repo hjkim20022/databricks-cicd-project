@@ -17,7 +17,7 @@ The pipeline processes retail sales CSV data through:
 - Medallion Architecture
 - ETL Pipeline
 
-## Project Structure
+## Project Structure - 
 
 data/
 ├── bronze/
@@ -27,7 +27,7 @@ data/
 pipelines/
 ├── etl_pipeline.py
 
-## Pipeline Process
+## Pipeline Process - 
 
 ### Bronze Layer
 Reads raw CSV sales data.
