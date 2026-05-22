@@ -1,0 +1,32 @@
+name: Python CI
+
+on:
+  push:
+    branches:
+      - main
+      - Feature/Github-actions-cicd
+
+pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.12'
+
+    - name: Install dependencies
+      run: |
+        pip install pytest
+
+    - name: Run tests
+      run: |
+        pytest
