@@ -9,7 +9,7 @@ The pipeline processes retail sales CSV data through:
 - Silver Layer (cleaned and transformed data)
 - Gold Layer (business summary data)
 
-## Technologies Used
+## Technologies Used - 
 - Python
 - Pandas
 - Git
@@ -17,7 +17,7 @@ The pipeline processes retail sales CSV data through:
 - Medallion Architecture
 - ETL Pipeline
 
-## Project Structure
+## Project Structure - 
 
 data/
 ├── bronze/
@@ -51,3 +51,4 @@ Creates business summary by Category.
 - Automated testing
 - Delta Lake integration
 - PySpark migration
+- Feature branch testing update
