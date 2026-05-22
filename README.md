@@ -1,54 +1,59 @@
-# Databricks CI/CD Data Engineering Project
+# Databricks CI/CD Retail Sales Project
 
 ## Project Overview
-This project demonstrates a simple Medallion Architecture ETL pipeline using Python and Pandas.
+This project demonstrates an end-to-end Data Engineering pipeline using Databricks, PySpark, Delta Lake, GitHub, and CI/CD concepts.
 
-The pipeline processes retail sales CSV data through:
+The pipeline follows the Medallion Architecture:
 
-- Bronze Layer (raw data)
-- Silver Layer (cleaned and transformed data)
-- Gold Layer (business summary data)
+Bronze → Silver → Gold
 
-## Technologies Used - 
-- Python
-- Pandas
-- Git
+## Architecture
+CSV file is uploaded into Databricks Volume.
+
+Bronze Layer:
+- raw sales data
+
+Silver Layer:
+- cleaned data
+- converted data types
+- calculated Revenue
+
+Gold Layer:
+- revenue summary by category
+
+## Technologies Used
+- Databricks
+- PySpark
+- Delta Lake
+- Unity Catalog
 - GitHub
-- Medallion Architecture
-- ETL Pipeline
+- GitHub Actions
+- pytest
+- Databricks Workflows
 
-## Project Structure - 
+## CI/CD Workflow
+1. Create feature branch
+2. Make code changes
+3. Commit and push
+4. Create pull request
+5. GitHub Actions runs tests
+6. Merge into main
 
-data/
-├── bronze/
-├── silver/
-├── gold/
+## Databricks Workflow
+The Databricks job runs the notebook automatically.
 
-pipelines/
-├── etl_pipeline.py
+Features:
+- scheduled daily run
+- Delta table validation
+- failure email notification
 
-## Pipeline Process - 
+## Data Quality Tests
+This project includes automated tests for:
+- revenue calculation
+- null checks
+- duplicate checks
+- data type checks
+- negative value checks
 
-### Bronze Layer
-Reads raw CSV sales data.
-
-### Silver Layer
-Cleans data and calculates Revenue.
-
-### Gold Layer
-Creates business summary by Category.
-
-## Sample Business Output
-
-| Category | Revenue |
-|----------|---------|
-| Electronics | 4000 |
-| Furniture | 850 |
-
-## Future Improvements
-- Databricks integration
-- CI/CD with GitHub Actions
-- Automated testing
-- Delta Lake integration
-- PySpark migration
-- Feature branch testing update
+## Resume Summary
+Built an end-to-end Databricks Medallion Architecture pipeline with PySpark, Delta Lake, Unity Catalog, GitHub Actions CI/CD, automated testing, workflow scheduling, and failure notifications.
