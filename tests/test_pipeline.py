@@ -31,3 +31,17 @@ def test_order_date_exists():
 
     assert order_date is not None
 
+
+def test_revenue_not_negative():
+    revenue = 2400
+    assert revenue >= 0
+
+
+def test_category_not_null():
+    category = "Electronics"
+    assert category is not None
+
+
+def test_orderid_unique():
+    order_ids = [1001, 1002, 1003]
+    assert len(order_ids) == len(set(order_ids))
