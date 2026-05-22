@@ -5,3 +5,8 @@ def test_revenue_calculation():
     revenue = quantity * price
 
     assert revenue == 2400
+
+def test_quantity_type():
+    quantity = int(5)
+
+    assert isinstance(quantity, int)
