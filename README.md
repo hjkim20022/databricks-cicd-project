@@ -27,7 +27,7 @@ data/
 pipelines/
 ├── etl_pipeline.py
 
-## Pipeline Process
+## Pipeline Process - 
 
 ### Bronze Layer
 Reads raw CSV sales data.
