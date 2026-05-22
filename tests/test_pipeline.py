@@ -10,3 +10,8 @@ def test_quantity_type():
     quantity = int(5)
 
     assert isinstance(quantity, int)
+
+def test_null_check():
+    product = "Laptop"
+
+    assert product is not None  
