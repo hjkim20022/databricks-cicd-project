@@ -122,42 +122,68 @@ Bronze → Silver → Gold architecture.
 
 ## Architecture Diagram
 
-```text
 CSV File
-   ↓
+
+ ↓
+
 Bronze Layer
+
    ↓
-Silver Layer
+
+Silver Laye
+
    ↓
+
 Gold Layer
+
    ↓
+
 Delta Validation
+
    ↓
+
 Databricks Workflow
+
    ↓
+
 GitHub Actions CI/CD
 
-## Future Improvements
+## Architecture
 
-Planned enhancements:
-- Auto Loader streaming pipeline
-- Delta Live Tables (DLT)
-- Unity Catalog governance
-- Advanced data quality monitoring
-- Real-time streaming analytics
+This project follows a Medallion Architecture approach using Bronze, Silver, and Gold layers.
+
+### Bronze Layer
+- Raw retail sales CSV data is ingested into Databricks.
+- Data is stored without transformation.
+
+### Silver Layer
+- Data cleaning and type casting are performed.
+- Revenue column is calculated using Quantity × Price.
+
+### Gold Layer
+- Aggregated business metrics are generated.
+- Total revenue is summarized by product category.
+
+### CI/CD Pipeline
+- GitHub Actions automatically runs validation tests on pull requests.
+- Databricks Workflows execute notebook jobs using Serverless compute.
+- Automated scheduling is configured for daily execution.
 
 ## Screenshots
 
 ### GitHub Actions CI/CD Success
+
 ![image_1779509305872.png](./image_1779509305872.png "image_1779509305872.png")
 
+
 ### Databricks Workflow Success
+
 ![image_1779509363531.png](./image_1779509363531.png "image_1779509363531.png")
 ![image_1779509645887.png](./image_1779509645887.png "image_1779509645887.png")
-### Bronze Silver Gold Pipeline
 
 
 ### Delta Table Validation
+
 ![image_1779509215275.png](./image_1779509215275.png "image_1779509215275.png")
 
 
