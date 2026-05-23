@@ -55,5 +55,27 @@ This project includes automated tests for:
 - data type checks
 - negative value checks
 
+## Workflow Scheduling
+
+This project includes automated Databricks workflow scheduling.
+
+Features:
+- Daily scheduled pipeline execution
+- Automated Delta table validation
+- Workflow failure notifications
+- GitHub CI/CD integration
+
+The workflow processes retail sales data through:
+Bronze → Silver → Gold architecture.
+
+## Future Improvements
+
+Planned enhancements:
+- Auto Loader streaming pipeline
+- Delta Live Tables (DLT)
+- Unity Catalog governance
+- Advanced data quality monitoring
+- Real-time streaming analytics
+
 ## Resume Summary
 Built an end-to-end Databricks Medallion Architecture pipeline with PySpark, Delta Lake, Unity Catalog, GitHub Actions CI/CD, automated testing, workflow scheduling, and failure notifications.
