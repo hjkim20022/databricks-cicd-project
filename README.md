@@ -7,19 +7,67 @@ The pipeline follows the Medallion Architecture:
 
 Bronze → Silver → Gold
 
-## Architecture
-CSV file is uploaded into Databricks Volume.
+## Architecture Explanation
 
-Bronze Layer:
-- raw sales data
+This project follows the Medallion Architecture pattern in Databricks.
 
-Silver Layer:
-- cleaned data
-- converted data types
-- calculated Revenue
+### Bronze Layer
+The Bronze layer stores raw retail sales CSV data exactly as ingested from the source system.
 
-Gold Layer:
-- revenue summary by category
+Tasks:
+- Read CSV data
+- Store raw data
+- Preserve original records
+
+### Silver Layer
+The Silver layer performs data cleaning and transformation.
+
+Tasks:
+- Convert data types
+- Remove invalid records
+- Calculate Revenue column
+- Prepare data for analytics
+
+Example:
+Revenue = Quantity × Price
+
+### Gold Layer
+The Gold layer creates business-ready aggregated data.
+
+Tasks:
+- Group sales by category
+- Calculate total revenue
+- Generate reporting datasets
+
+### Workflow Automation
+Databricks Workflows automatically run the notebook every day at 6:00 AM.
+
+Features:
+- Automated scheduling
+- Delta table validation
+- Failure email notifications
+- Production-style orchestration
+
+### CI/CD Process
+This project uses GitHub and GitHub Actions for CI/CD.
+
+Process:
+1. Create feature branch
+2. Develop changes
+3. Commit & Push
+4. Create Pull Request
+5. Run automated tests
+6. Merge into main branch
+
+### Technologies Used
+- Databricks
+- PySpark
+- Delta Lake
+- Unity Catalog
+- GitHub
+- GitHub Actions
+- Databricks Workflows
+- pytest
 
 ## Technologies Used
 - Databricks
