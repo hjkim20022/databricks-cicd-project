@@ -80,6 +80,8 @@ Process:
 - Databricks Workflows
 
 ## CI/CD Workflow
+![image_1779498983743.png](./image_1779498983743.png "image_1779498983743.png")
+
 1. Create feature branch
 2. Make code changes
 3. Commit and push
