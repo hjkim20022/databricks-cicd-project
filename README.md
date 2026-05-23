@@ -11,6 +11,7 @@ Bronze → Silver → Gold
 
 This project follows the Medallion Architecture pattern in Databricks.
 
+
 ### Bronze Layer
 The Bronze layer stores raw retail sales CSV data exactly as ingested from the source system.
 
@@ -40,6 +41,7 @@ Tasks:
 - Generate reporting datasets
 
 ### Workflow Automation
+
 Databricks Workflows automatically run the notebook every day at 6:00 AM.
 
 Features:
@@ -80,7 +82,7 @@ Process:
 - Databricks Workflows
 
 ## CI/CD Workflow
-![image_1779498983743.png](./image_1779498983743.png "image_1779498983743.png")
+
 
 1. Create feature branch
 2. Make code changes
@@ -118,6 +120,23 @@ Features:
 The workflow processes retail sales data through:
 Bronze → Silver → Gold architecture.
 
+## Architecture Diagram
+
+```text
+CSV File
+   ↓
+Bronze Layer
+   ↓
+Silver Layer
+   ↓
+Gold Layer
+   ↓
+Delta Validation
+   ↓
+Databricks Workflow
+   ↓
+GitHub Actions CI/CD
+
 ## Future Improvements
 
 Planned enhancements:
@@ -126,6 +145,22 @@ Planned enhancements:
 - Unity Catalog governance
 - Advanced data quality monitoring
 - Real-time streaming analytics
+
+## Screenshots
+
+### GitHub Actions CI/CD Success
+![image_1779509305872.png](./image_1779509305872.png "image_1779509305872.png")
+
+### Databricks Workflow Success
+![image_1779509363531.png](./image_1779509363531.png "image_1779509363531.png")
+![image_1779509645887.png](./image_1779509645887.png "image_1779509645887.png")
+### Bronze Silver Gold Pipeline
+
+
+### Delta Table Validation
+![image_1779509215275.png](./image_1779509215275.png "image_1779509215275.png")
+
+
 
 ## Resume Summary
 Built an end-to-end Databricks Medallion Architecture pipeline with PySpark, Delta Lake, Unity Catalog, GitHub Actions CI/CD, automated testing, workflow scheduling, and failure notifications.
