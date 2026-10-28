@@ -4,6 +4,7 @@ These checks run against real DataFrames; they are not hard-coded sample asserti
 """
 from dataclasses import dataclass
 from math import isclose
+from functools import reduce
 
 from pyspark.sql import DataFrame
 from pyspark.sql import functions as F
@@ -68,7 +69,7 @@ def validate_silver(silver_df: DataFrame) -> list[QualityResult]:
     ]
     check(
         "required_values",
-        F.reduce(
+        reduce(
             lambda a, b: a | b,
             [F.col(c).isNull() for c in required_nonnull],
         ),
