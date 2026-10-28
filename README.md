@@ -100,7 +100,7 @@ A scheduled Workflow and failure notifications are workspace configuration; repo
 
 ### New: Databricks quality-validation run (October 28, 2026)
 
-A separate read-only Databricks notebook loaded five sample sales records from the Unity Catalog Volume. It validated the in-memory Silver and Gold DataFrames without overwriting the existing Delta tables.
+A separate read-only testing notebook loaded five sample sales records from the Unity Catalog Volume and validated in-memory Silver/Gold DataFrames. **The full updated batch pipeline was subsequently run using isolated Silver and Gold test table names**, followed by an independent read of the saved Delta outputs. The original output tables were not targeted during this test.
 
 **Silver validation — all 8 checks passed (0 failed rows per check)**
 
@@ -114,11 +114,17 @@ A separate read-only Databricks notebook loaded five sample sales records from t
 
 ![Expected duplicate-record failure](docs/evidence/03-duplicate-detection.png)
 
-Read the [evidence notes and test scope](docs/evidence/README.md). These images show DataFrame validation and a deliberately triggered error; they do not demonstrate an actual Databricks Workflow failure or a new Delta table overwrite.
+**Persisted Delta output — test Silver = 5 rows; test Gold = 2 rows; both sum to 4,850**
+
+![Saved Delta tables verified after full batch test](docs/evidence/04-saved-delta-validation.png)
+
+The test wrote `retail_sales_catalog.default.silver_sales_quality_test_20261028` and `retail_sales_catalog.default.gold_sales_quality_test_20261028`. The original Silver and Gold tables remained outside the selected write destinations. **These test-target substitutions were made locally in Databricks, not committed to the repository.**
+
+Read the [evidence notes and test scope](docs/evidence/README.md). The images show in-memory validation, deliberately triggered rejection of a duplicate, and an independent read of two newly created test Delta tables. They do **not** demonstrate an actual scheduled Databricks Workflow execution.
 
 ### GitHub Actions CI/CD
 
-The updated PySpark test suite passed in [GitHub Actions run #69](https://github.com/hjkim20022/databricks-cicd-project/actions/runs/40644326091). A subsequent run on the evidence commits, [run #77](https://github.com/hjkim20022/databricks-cicd-project/actions/runs/40661734907), also completed successfully. Open a run's `pytest-results` artifact for a machine-readable JUnit report.
+The updated PySpark test suite passed in [GitHub Actions run #69](https://github.com/hjkim20022/databricks-cicd-project/actions/runs/40644326091). A subsequent run, [run #81](https://github.com/hjkim20022/databricks-cicd-project/actions/runs/40662058330), completed successfully with **23 tests passed** and a JUnit artifact. Open a run's `pytest-results` artifact for a machine-readable JUnit report.
 
 ### Earlier Databricks screenshots (prior implementation)
 
@@ -142,7 +148,7 @@ The following screenshots are retained from earlier work. They should not be int
 
 | Capability | Status |
 | --- | --- |
-| Batch PySpark transforms and Silver/Gold Delta writes | Implemented in source code; validate execution in Databricks |
+| Batch PySpark transforms and Silver/Gold Delta writes | Executed successfully against isolated test tables; saved row counts and revenue reconciled |
 | PySpark quality gates and local Spark tests | Implemented; passing CI run and Databricks in-memory validation evidence linked above |
 | GitHub Actions test workflow | Configured and successfully executed for the upgraded tests; see linked runs |
 | Unity Catalog Volume and named tables | Referenced in code; access-control grants are not demonstrated |
@@ -155,4 +161,4 @@ The following screenshots are retained from earlier work. They should not be int
 
 ## Portfolio summary
 
-Implemented a Databricks/PySpark batch retail-sales pipeline with Silver/Gold Delta output, reusable data-quality validation, revenue reconciliation, and PySpark tests integrated with a GitHub Actions CI workflow. Automated tests and read-only Databricks DataFrame validation have passed; publishing the upgraded notebook through Databricks Workflows remains to be verified.
+Implemented a Databricks/PySpark batch retail-sales pipeline with Silver/Gold Delta output, reusable data-quality validation, revenue reconciliation, and PySpark tests integrated with a GitHub Actions CI workflow. Automated tests, in-memory quality checks, and an end-to-end batch execution writing isolated Delta test tables have passed. Scheduled Databricks Workflow execution and alerts remain unverified.
