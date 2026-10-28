@@ -98,31 +98,53 @@ A scheduled Workflow and failure notifications are workspace configuration; repo
 
 ## Validation evidence
 
-The repository currently contains screenshots from earlier GitHub Actions and Databricks runs:
+### New: Databricks quality-validation run (October 28, 2026)
 
-**Prior GitHub Actions run**
+A separate read-only Databricks notebook loaded five sample sales records from the Unity Catalog Volume. It validated the in-memory Silver and Gold DataFrames without overwriting the existing Delta tables.
 
-![Prior CI run](./image_1779509305872.png)
+**Silver validation — all 8 checks passed (0 failed rows per check)**
 
-**Prior Databricks Workflow screenshots**
+![Silver checks: 8 of 8 passed](docs/evidence/01-silver-quality-pass.png)
 
-![Prior workflow run 1](./image_1779509363531.png)
+**Gold reconciliation — Silver = 4,850; Gold = 4,850**
 
-![Prior workflow run 2](./image_1779509645887.png)
+![Gold revenue reconciliation passed](docs/evidence/gold_reconciliation_evidence_verified.png)
 
-**Prior Delta output validation**
+**Negative test — expected duplicate OrderID failure (1 invalid record detected)**
 
-![Prior Delta validation](./image_1779509215275.png)
+![Expected duplicate-record failure](docs/evidence/03-duplicate-detection.png)
 
-**Evidence still to capture for this upgrade:** a successful new CI run with JUnit artifact, one intentionally failed quality-gate run on test data, a corrected successful run, and real Delta reconciliation results. See [docs/data_quality.md](docs/data_quality.md). Do not treat earlier screenshots as proof of these new cases.
+Read the [evidence notes and test scope](docs/evidence/README.md). These images show DataFrame validation and a deliberately triggered error; they do not demonstrate an actual Databricks Workflow failure or a new Delta table overwrite.
+
+### GitHub Actions CI/CD
+
+The updated PySpark test suite passed in [GitHub Actions run #69](https://github.com/hjkim20022/databricks-cicd-project/actions/runs/40644326091). A subsequent run on the evidence commits, [run #77](https://github.com/hjkim20022/databricks-cicd-project/actions/runs/40661734907), also completed successfully. Open a run's `pytest-results` artifact for a machine-readable JUnit report.
+
+### Earlier Databricks screenshots (prior implementation)
+
+The following screenshots are retained from earlier work. They should not be interpreted as proof that this upgraded notebook was scheduled or used to publish new Delta tables.
+
+**Previous GitHub Actions run**
+
+![Earlier CI run](./image_1779509305872.png)
+
+**Previous Databricks Workflow runs**
+
+![Earlier workflow run 1](./image_1779509363531.png)
+
+![Earlier workflow run 2](./image_1779509645887.png)
+
+**Previous Delta table validation**
+
+![Earlier Delta validation](./image_1779509215275.png)
 
 ## Current scope and future improvements
 
 | Capability | Status |
 | --- | --- |
 | Batch PySpark transforms and Silver/Gold Delta writes | Implemented in source code; validate execution in Databricks |
-| PySpark quality gates and local Spark tests | Implemented in this branch; CI execution results pending |
-| GitHub Actions test workflow | Configured in repository; see Actions for latest status |
+| PySpark quality gates and local Spark tests | Implemented; passing CI run and Databricks in-memory validation evidence linked above |
+| GitHub Actions test workflow | Configured and successfully executed for the upgraded tests; see linked runs |
 | Unity Catalog Volume and named tables | Referenced in code; access-control grants are not demonstrated |
 | Databricks Workflows | Previous-run screenshots exist; current schedule/alerts require workspace verification |
 | Auto Loader streaming | Planned separately; not implemented in this repository |
@@ -133,4 +155,4 @@ The repository currently contains screenshots from earlier GitHub Actions and Da
 
 ## Portfolio summary
 
-Implemented a Databricks/PySpark batch retail-sales pipeline with Silver/Gold Delta output, reusable data-quality validation, revenue reconciliation, and PySpark tests integrated with a GitHub Actions CI workflow. Workspace execution and the upgraded CI run should be verified before reporting passing results in a resume.
+Implemented a Databricks/PySpark batch retail-sales pipeline with Silver/Gold Delta output, reusable data-quality validation, revenue reconciliation, and PySpark tests integrated with a GitHub Actions CI workflow. Automated tests and read-only Databricks DataFrame validation have passed; publishing the upgraded notebook through Databricks Workflows remains to be verified.
