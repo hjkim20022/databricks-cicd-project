@@ -1,65 +1,41 @@
-# Project Architecture
+# Retail sales project architecture
 
-## Overview
-This project demonstrates a beginner-friendly Medallion Architecture ETL pipeline.
+## Databricks / PySpark implementation
 
-The pipeline processes retail sales CSV data using Python and Pandas.
+```text
+CSV file in Unity Catalog Volume (raw Bronze source)
+  -> PySpark type conversions and Revenue calculation
+  -> Critical data-quality checks on Silver DataFrame
+  -> Gold category-level aggregation
+  -> Silver-versus-Gold revenue reconciliation
+  -> Silver Delta table / Gold Delta table
+  -> Output row count validation
+```
 
----
+Source: `/Volumes/retail_sales_catalog/default/bronze_data/sales_data.csv`  
+Silver table: `retail_sales_catalog.default.silver_sales`  
+Gold table: `retail_sales_catalog.default.gold_sales_summary`
 
-## Architecture Flow
+The source is raw CSV; the project does **not** currently persist a Bronze Delta table. The critical validation gate runs before Delta writes begin. Sequential Silver and Gold writes are not a multi-table atomic commit.
 
-Bronze Layer → Silver Layer → Gold Layer
+Main implementation: `notebooks/bronze_to_silver_notebook.py`, plus `pipelines/data_quality.py`.
 
----
+## Local Pandas demonstration
 
-## Bronze Layer
-Stores raw retail sales CSV data.
+```text
+data/bronze/sales_data.csv
+  -> pipelines/etl_pipeline.py
+  -> data/silver/silver_sales_data.csv
+  -> data/gold/gold_sales_by_category.csv
+```
 
-File:
-- sales_data.csv
+This is a separate CSV-based learning path, not proof that the Databricks notebook has run. Its current outputs remain in the repository for inspection.
 
-Purpose:
-- preserve original source data
+## Test and workflow boundaries
 
----
+- `tests/test_data_quality.py` uses actual local Spark DataFrames and covers invalid input and reconciliation.
+- `.github/workflows/python-ci.yml` runs pytest and publishes a JUnit report.
+- Databricks Workflows must be configured and verified in the Databricks workspace; GitHub Actions does not automatically deploy or trigger those jobs.
+- Unity Catalog locations are referenced in code, but grant/lineage evidence is a separate planned upgrade.
 
-## Silver Layer
-Performs data cleaning and transformations.
-
-Transformations:
-- remove extra spaces
-- convert data types
-- calculate Revenue column
-
-Output:
-- silver_sales_data.csv
-
----
-
-## Gold Layer
-Creates business-ready aggregated data.
-
-Business Logic:
-- total revenue by category
-
-Output:
-- gold_sales_by_category.csv
-
----
-
-## Technologies Used
-- Python
-- Pandas
-- Git
-- GitHub
-- PyCharm
-
----
-
-## Future Improvements
-- Databricks integration
-- Delta Lake
-- PySpark migration
-- GitHub Actions CI/CD
-- Automated testing
+See [Data quality runbook](data_quality.md) for rules, execution steps, and screenshots to capture.
