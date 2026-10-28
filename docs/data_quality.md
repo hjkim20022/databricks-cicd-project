@@ -40,17 +40,23 @@ The CI workflow uses Python 3.11 and Java 17 for PySpark. Download the `pytest-r
 - Restore valid data and rerun; capture the successful Workflow status and reconciliation output.
 - Do not inject invalid rows into a production dataset or overwrite established reporting tables during the demonstration.
 
-## Evidence to add after execution
+## Evidence recorded — October 28, 2026
 
-| Proposed path | Capture |
+| Evidence path | Verified outcome |
 | --- | --- |
-| `docs/evidence/01-github-actions-tests.png` | Successful run for the new branch/commit and JUnit artifact |
-| `docs/evidence/02-quality-check-failed.png` | Deliberately failed quality gate on safe test data |
-| `docs/evidence/03-workflow-validation.png` | Failed test run followed by corrected success |
-| `docs/evidence/04-delta-validation.png` | Actual Silver and Gold row counts and reconciled revenue |
-| `docs/evidence/validation-results.json` | Genuine check statuses, failed-row counts, and timestamp from a run |
+| `docs/evidence/01-silver-quality-pass.png` | Eight in-memory quality checks passed on the five-row sample |
+| `docs/evidence/gold_reconciliation_evidence_verified.png` | Silver revenue and Gold revenue both equal 4,850 |
+| `docs/evidence/03-duplicate-detection.png` | Deliberate in-memory duplicate failed the unique OrderID gate with one invalid record |
+| `docs/evidence/04-saved-delta-validation.png` | Independent read of persisted test Delta tables: Silver 5 rows; Gold 2 rows; both total 4,850 |
 
-These paths are an evidence checklist. Screenshots and JSON results must be created from real executions; they are **not** included or fabricated in this branch.
+The full batch notebook was executed with **temporary isolated output table names** in Databricks (not committed to the notebook source). Its successful console output reported all eight checks passing, revenue reconciliation, and nonempty persisted outputs. The output destinations were:
+
+- `retail_sales_catalog.default.silver_sales_quality_test_20261028`
+- `retail_sales_catalog.default.gold_sales_quality_test_20261028`
+
+This test did not target the existing `silver_sales` and `gold_sales_summary` tables. See [evidence README](evidence/README.md) for screenshots and scope.
+
+**Not yet demonstrated:** scheduled Databricks Workflow execution with this upgraded code, failure notifications, and persisted monitoring history. Do not claim these capabilities as completed.
 
 ## Limitations
 
