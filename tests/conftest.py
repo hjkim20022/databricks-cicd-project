@@ -25,5 +25,3 @@ def bronze(spark):
     return spark.createDataFrame(
         rows, ["OrderID", "Product", "Category", "Quantity", "Price", "OrderDate"]
     )
-
-
