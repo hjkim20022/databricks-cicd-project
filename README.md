@@ -51,11 +51,15 @@ Databricks Workflows -> Databricks notebook execution (configure in workspace)
 | `notebooks/bronze_to_silver_notebook.py` | Databricks batch ETL with pre-write validation |
 | `notebooks/bronze_to_silver_notebook.ipynb` | Notebook-format version of the same pipeline |
 | `pipelines/data_quality.py` | Reusable Silver transforms, validation rules, and Gold reconciliation |
+| `pipelines/retail_pipeline.py` | Shared runner that validates both layers before Delta publication |
+| `notebooks/validate_quality_gates.ipynb` | Repeatable workspace proof using unique test tables; execution pending |
 | `pipelines/etl_pipeline.py` | Separate Pandas/CSV ETL demonstration |
 | `tests/test_data_quality.py` | PySpark DataFrame positive and negative tests |
+| `tests/test_pipeline_publication.py` | Verifies rejected inputs and mismatched totals never reach the write boundary |
 | `tests/test_pipeline.py` | Earlier static unit tests retained for historical context |
 | `.github/workflows/python-ci.yml` | Automated pytest and JUnit artifact upload |
 | `docs/data_quality.md` | Rules, limitations, and evidence plan |
+| `docs/workspace_proof.md` | Instructions for persistence, scheduler, and notification evidence |
 
 ## Data-quality checks
 
@@ -97,6 +101,18 @@ The CI workflow configures Java 17, installs requirements, runs these tests, and
 A scheduled Workflow and failure notifications are workspace configuration; repository code alone cannot prove their current configuration. Existing screenshots show prior runs, not necessarily this upgraded code.
 
 ## Validation evidence
+
+### Repeatable validation notebook
+
+The [workspace proof notebook](notebooks/validate_quality_gates.ipynb) now uses
+the same publication runner as the batch notebook. It creates unique test Delta
+tables, injects a duplicate in memory, and checks that both saved table versions
+remain unchanged after rejection. A controlled notification-test parameter is
+also provided. **This new notebook has not yet been executed in Databricks.**
+See the [workspace proof runbook](docs/workspace_proof.md) for required evidence.
+
+CI tests substitute the output-write boundary to verify the ordering of quality
+checks. Those tests do not establish persistence behavior in Databricks.
 
 ### New: Databricks quality-validation run (October 28, 2026)
 

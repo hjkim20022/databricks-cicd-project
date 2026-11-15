@@ -18,13 +18,7 @@ else:
         "Cannot find pipelines/data_quality.py. Run from the Git-connected project."
     )
 
-from pipelines.data_quality import (
-    assert_gold_reconciled,
-    assert_quality,
-    create_gold,
-    transform_to_silver,
-    validate_silver,
-)
+from pipelines.retail_pipeline import publish_retail_sales
 
 BRONZE_SOURCE = "/Volumes/retail_sales_catalog/default/bronze_data/sales_data.csv"
 SILVER_TABLE = "retail_sales_catalog.default.silver_sales"
@@ -33,30 +27,7 @@ GOLD_TABLE = "retail_sales_catalog.default.gold_sales_summary"
 # Bronze: raw source in Unity Catalog Volume (not a Bronze Delta table).
 bronze_df = spark.read.option("header", True).csv(BRONZE_SOURCE)
 
-# Silver transformations and critical checks happen BEFORE any table overwrite.
-silver_df = transform_to_silver(bronze_df).cache()
-try:
-    quality_results = validate_silver(silver_df)
-    assert_quality(quality_results)
-
-    # Gold is computed from validated Silver data.
-    gold_df = create_gold(silver_df).cache()
-    try:
-        assert_gold_reconciled(silver_df, gold_df)
-
-        # This demonstration uses sequential writes, not an atomic two-table
-        # transaction. Avoid concurrent writers to these output tables.
-        silver_df.write.format("delta").mode("overwrite").saveAsTable(SILVER_TABLE)
-        gold_df.write.format("delta").mode("overwrite").saveAsTable(GOLD_TABLE)
-
-        silver_count = spark.table(SILVER_TABLE).count()
-        gold_count = spark.table(GOLD_TABLE).count()
-        if silver_count <= 0 or gold_count <= 0:
-            raise ValueError("Delta output validation failed: an output is empty")
-
-        print(f"PASS | delta_output_rows | silver={silver_count}, gold={gold_count}")
-        print("Retail pipeline complete: validated Silver and Gold Delta tables.")
-    finally:
-        gold_df.unpersist()
-finally:
-    silver_df.unpersist()
+# The shared runner validates both layers before starting either Delta write.
+publish_retail_sales(
+    spark, bronze_df, silver_table=SILVER_TABLE, gold_table=GOLD_TABLE,
+)
